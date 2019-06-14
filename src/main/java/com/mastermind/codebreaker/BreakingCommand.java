@@ -93,7 +93,7 @@ public class BreakingCommand {
 
 	private List<Integer> getPotantialNumbers(int D) {
 		List<Integer> returnList = new ArrayList<>();
-		for(int i = 0 ; i<D ; i++) {
+		for(int i = 0 ; i<D+1 ; i++) {
 			returnList.add(i);
 		}
 		return returnList;
