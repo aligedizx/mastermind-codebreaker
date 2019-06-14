@@ -41,6 +41,9 @@ public class ProposalUtils {
 	//Check proposal consistency, it has to get same score with proposal which is compared with own
 	public static boolean isProposalConsistent(List<AbstractMap.SimpleEntry<Integer, Integer[]>> proposals, String newProposal, int N) {
 
+		if (newProposal.charAt(0) == '0')
+			return false;
+
 		//handle 0 index 0 value problem
 		if (newProposal.contains("error"))
 			return false;
@@ -164,6 +167,7 @@ public class ProposalUtils {
 			int number;
 			for(int i = 0; i<newProposalIndices.size(); i++){	//We place random and appropriate numbers from remaining numbers to remaining indices
 				do {
+					System.out.println(numberList.toString());
 					number = numberList.get(randomGenerator.nextInt(numberList.size()));
 					//if 0 index 0 value problem occurs
 					if (numberList.size() == 1 && newProposalIndices.size() == 1 && newProposalIndices.get(0) == 0 && numberList.get(0) == 0 ){
