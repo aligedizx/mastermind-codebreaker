@@ -75,7 +75,6 @@ public class BreakingCommand {
 		stopwatch.suspend();
 		// calculate remining time
 		maxTime -= stopwatch.getTime(TimeUnit.MILLISECONDS);
-		System.out.println("kalan zaman: " + maxTime);
 		if(maxTime < 0) {
 			System.exit(0); //If time is out, exit the program
 		}
