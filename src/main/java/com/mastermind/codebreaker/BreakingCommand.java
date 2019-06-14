@@ -34,38 +34,42 @@ public class BreakingCommand {
 		int exact = Integer.parseInt(argArr[0]);
 		int misplaced = Integer.parseInt(argArr[1]);
 
-		AbstractMap.SimpleEntry<Integer, Integer[]> bestProposal = new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced});
-		proposals.add(bestProposal);
+		if (exact != N){ //If proposal is correct exit the program
+			AbstractMap.SimpleEntry<Integer, Integer[]> bestProposal = new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced});
+			proposals.add(bestProposal);
 
-		do{
-			if(++round >= maxTurn) // if turn is over, exit the program
-				break;
+			do{
+				if(++round >= maxTurn) // if turn is over, exit the program
+					break;
 
-			if (exact == 0 && misplaced == 0){	//if it does not contain any digits
-				updatePotantialNumbers(potInts, proposal, N);
-				proposal = ProposalUtils.getFirstProposal(potInts, D, N); //get new proposal
+				if (exact == 0 && misplaced == 0){	//if it does not contain any digits
+					updatePotantialNumbers(potInts, proposal, N);
+					proposal = ProposalUtils.getFirstProposal(potInts, D, N); //get new proposal
 
 
-			}else{  // Check and Update best proposal
-				if (ProposalUtils.compareWithBestProposal(bestProposal, proposal, exact, misplaced)){
-					bestProposal = new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced});
+				}else{  // Check and Update best proposal
+					if (ProposalUtils.compareWithBestProposal(bestProposal, proposal, exact, misplaced)){
+						bestProposal = new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced});
+					}
+					proposal = ProposalUtils.getNewProposal(proposals, potInts, N, bestProposal); // Create new consistent proposal
 				}
-				proposal = ProposalUtils.getNewProposal(proposals, potInts, N, bestProposal); // Create new consistent proposal
-			}
 
-			System.out.println(proposal);
-			line = getResponse();
-			argArr = line.split(" ");
-			exact = Integer.parseInt(argArr[0]);
-			misplaced = Integer.parseInt(argArr[1]);
-			proposals.add(new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced})); // Add proposal and its score to history
+				System.out.println(proposal);
+				line = getResponse();
+				argArr = line.split(" ");
+				exact = Integer.parseInt(argArr[0]);
+				misplaced = Integer.parseInt(argArr[1]);
+				proposals.add(new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced})); // Add proposal and its score to history
 
-			if (exact == N){ //If proposal is correct exit the program
-				break;
-			}
+				if (exact == N){ //If proposal is correct exit the program
+					break;
+				}
 
-		}while(true);
-		
+			}while(true);
+
+		}
+
+
 		sc.close();
 	}
 
