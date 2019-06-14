@@ -41,28 +41,28 @@ public class BreakingCommand {
 			if(++round >= maxTurn) // if turn is over, exit the program
 				break;
 
-			if (exact == 0 && misplaced == 0){
+			if (exact == 0 && misplaced == 0){	//if it does not contain any digits
 				updatePotantialNumbers(potInts, proposal, N);
-				proposal = ProposalUtils.getFirstProposal(potInts, D, N);
+				proposal = ProposalUtils.getFirstProposal(potInts, D, N); //get new proposal
+
 
 			}else{  // Check and Update best proposal
 				if (ProposalUtils.compareWithBestProposal(bestProposal, proposal, exact, misplaced)){
 					bestProposal = new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced});
 				}
-
 				proposal = ProposalUtils.getNewProposal(proposals, potInts, N, bestProposal); // Create new consistent proposal
 				System.out.println(proposal);
+			}
 
-				line = getResponse();
-				argArr = line.split(" ");
-				exact = Integer.parseInt(argArr[0]);
-				misplaced = Integer.parseInt(argArr[1]);
-				proposals.add(new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced})); // Add proposal and its score to history
+			System.out.println(proposal);
+			line = getResponse();
+			argArr = line.split(" ");
+			exact = Integer.parseInt(argArr[0]);
+			misplaced = Integer.parseInt(argArr[1]);
+			proposals.add(new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced})); // Add proposal and its score to history
 
-				if (exact == N){ //If proposal is correct exit the program
-					break;
-				}
-
+			if (exact == N){ //If proposal is correct exit the program
+				break;
 			}
 
 		}while(true);

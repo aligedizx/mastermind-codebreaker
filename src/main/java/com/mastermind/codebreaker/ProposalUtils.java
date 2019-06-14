@@ -12,19 +12,20 @@ public class ProposalUtils {
 
 	//Create random consistent proposal for start
 	public static int getFirstProposal(List<Integer> potInts, int d, int n) {
-		List<Integer> potantialNumbersClone = new ArrayList<>(potInts);
+
 		int proposal = 0;
 
+		List<Integer> potantialNumbersClone = new ArrayList<>(potInts);
 		for(int i = 0 ; i<n; i++){
-			int index = randomGenerator.nextInt(potantialNumbersClone.size());
 
-			while(i == 0 && potantialNumbersClone.get(index) == 0){
-				index = randomGenerator.nextInt(potantialNumbersClone.size());
+			int number = potantialNumbersClone.get(randomGenerator.nextInt(potantialNumbersClone.size()));
+
+			while(i == 0 && number == 0){
+				number = potantialNumbersClone.get(randomGenerator.nextInt(potantialNumbersClone.size()));
 			}
 
-			proposal = proposal + ((int) Math.pow(10, (n-i-1) )) * potantialNumbersClone.get(index);
-			potantialNumbersClone.removeAll(Collections.singleton(potantialNumbersClone.get(index)));
-
+			proposal = proposal + (((int) Math.pow(10, (n-i-1) )) * number);
+			potantialNumbersClone.remove(Integer.valueOf(number));
 		}
 		return proposal;
 	}
