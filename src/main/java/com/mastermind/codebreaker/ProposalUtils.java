@@ -40,6 +40,11 @@ public class ProposalUtils {
 
 	//Check proposal consistency, it has to get same score with proposal which is compared with own
 	public static boolean isProposalConsistent(List<AbstractMap.SimpleEntry<Integer, Integer[]>> proposals, String newProposal, int N) {
+
+		//handle 0 index 0 value problem
+		if (newProposal.contains("error"))
+			return false;
+
 		String iterProp;
 		Integer[] newProposalScore = {0,0};
 		Integer[] iterScore;
@@ -79,7 +84,7 @@ public class ProposalUtils {
 	}
 
 	//We produce new proposals according to bestProposal
-	public static int getNewProposal(List<AbstractMap.SimpleEntry<Integer, Integer[]>> proposals, List<Integer> potInts, int N, 
+	public static int getNewProposal(List<AbstractMap.SimpleEntry<Integer, Integer[]>> proposals, List<Integer> potInts, int N,
 			AbstractMap.SimpleEntry<Integer, Integer[]> bestProposal) {
 		String proposal;
 		String newProposal;
@@ -90,16 +95,17 @@ public class ProposalUtils {
 		do {	//Checking consistency of new proposal
 			numberList = new ArrayList<>(potInts);
 			proposal = Integer.toString(bestProposal.getKey());
-			newProposal = "x";
-
-			for(int i = 0; i<N-1; i++){
-				newProposal = newProposal + "x";
-			}
 
 			ArrayList<Integer> newProposalIndices;
 			ArrayList<Integer> originProposalIndices;
 			int commonIndicesNumber;
 			do {	//Remaining indices after placing misplaced values should greater than number of exact values. We control this
+
+				//create new proposal template
+				newProposal = "x";
+				for(int i = 0; i<N-1; i++){
+					newProposal = newProposal + "x";
+				}
 
 				//Create Index lists
 				newProposalIndices = new ArrayList<Integer>();
@@ -115,6 +121,11 @@ public class ProposalUtils {
 					do{
 						index1 = originProposalIndices.get(randomGenerator.nextInt(originProposalIndices.size()));
 						index2 = newProposalIndices.get(randomGenerator.nextInt(newProposalIndices.size()));
+
+						//if 0 index 0 value problem occurs
+						if (newProposalIndices.size() == 1 && newProposalIndices.get(0) == 0 && originProposalIndices.size() == 0 && proposal.charAt(index1) == '0')
+							newProposal = newProposal + "error";
+							break;
 					}while ((index2 == 0 && proposal.charAt(index1) == '0') ||	// Value of first index can't be 0
 							index1 == index2);
 
@@ -154,12 +165,16 @@ public class ProposalUtils {
 			for(int i = 0; i<newProposalIndices.size(); i++){	//We place random and appropriate numbers from remaining numbers to remaining indices
 				do {
 					number = numberList.get(randomGenerator.nextInt(numberList.size()));
+					//if 0 index 0 value problem occurs
+					if (numberList.size() == 1 && newProposalIndices.size() == 1 && newProposalIndices.get(0) == 0 && numberList.get(0) == 0 ){
+						newProposal = newProposal + "error";
+						break;
+					}
 				}while (number == 0 && newProposalIndices.get(i) == 0);
 
 				newProposal = ProposalUtils.replace(newProposal, newProposalIndices.get(i), String.valueOf(number));
 				numberList.remove(Integer.valueOf(number));
 			}
-
 
 		}while(!ProposalUtils.isProposalConsistent(proposals, newProposal, N));
 

@@ -51,7 +51,6 @@ public class BreakingCommand {
 					bestProposal = new AbstractMap.SimpleEntry<>(proposal, new Integer[]{exact, misplaced});
 				}
 				proposal = ProposalUtils.getNewProposal(proposals, potInts, N, bestProposal); // Create new consistent proposal
-				System.out.println(proposal);
 			}
 
 			System.out.println(proposal);
